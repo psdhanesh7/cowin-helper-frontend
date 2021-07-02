@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import firebase from "firebase/app";
+import "firebase/auth";
 import "firebase/messaging";
+
+import Profile from "../Profile/Profile"	
 
 export default function Home() {
 
@@ -27,9 +30,12 @@ export default function Home() {
 
 	})
 
+
 	return (
 		<div>
-			Home
+			<Profile/>
 		</div>
 	)
+
+
 }

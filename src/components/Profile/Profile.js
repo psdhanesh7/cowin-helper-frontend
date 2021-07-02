@@ -4,9 +4,11 @@ import "firebase/firestore";
 
 import Nav from '../Navbar/Navbar';
 
-export default function Profile({ user }) {
+export default function Profile() {
 
 	const db = firebase.firestore();
+
+	const [user, setUser] = useState();
 
 	const [name, setName] = useState('');
 	const [age, setAge] = useState('');
@@ -16,6 +18,7 @@ export default function Profile({ user }) {
 	useEffect(() => {
 		async function fetchUserData() {
 			const user = firebase.auth().currentUser;
+			setUser(user);
 			try {
 				const userDoc = await db.collection('users').doc(user.email).get();
 				console.log(userDoc.data());
@@ -36,7 +39,7 @@ export default function Profile({ user }) {
 		fetchUserData();
 	}, []);
 
-	if(user) {
+	// if(user) {
 		return (
 			<div>
 				<Nav />
@@ -88,7 +91,7 @@ export default function Profile({ user }) {
 			</div>		
 
 		)
-	} else {
-		return <div>Loading</div>
-	}
+	// } else {
+	// 	return <div>Loading</div>
+	// }
 }
