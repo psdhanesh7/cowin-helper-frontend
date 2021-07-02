@@ -1,11 +1,10 @@
 var firebaseConfig = {
-    apiKey: "AIzaSyDbdPVU48BfEFW5PRIEYKqzqIB6_q4ez_4",
-    authDomain: "cowin-helper-e2e89.firebaseapp.com",
-    projectId: "cowin-helper-e2e89",
-    storageBucket: "cowin-helper-e2e89.appspot.com",
-    messagingSenderId: "769548869625",
-    appId: "1:769548869625:web:25c0cd9292a9aac6476728",
-    measurementId: "G-72ZQ0VEWE2"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 // Initialize Firebase
 export default firebaseConfig;

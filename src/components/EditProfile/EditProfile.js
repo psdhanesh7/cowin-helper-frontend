@@ -6,6 +6,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
+import Nav from "../Navbar/Navbar";
 import "./EditProfile.css"
 
 export default function EditProfile({ user }) {
@@ -82,11 +83,12 @@ export default function EditProfile({ user }) {
 
 	// if(user) {
 		return (
-			<div>	
+			<div>
+				<Nav></Nav>
 				<div class="container">
 					<h2>Edit Profile</h2>
 	
-					<form action="/action_page.php">
+					<form>
 					<div class="row">
 						<div class="col-25">
 							<label for="name">Name</label>
