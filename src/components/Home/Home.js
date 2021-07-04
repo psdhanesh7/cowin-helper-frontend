@@ -25,7 +25,7 @@ export default function Home() {
 			})
 		
 		messaging.onMessage(function(payload) {
-			console.log('onMessage: ' + payload);
+			alert(`${payload.notification.title}\n${payload.notification.body}`);
 		})
 
 	})

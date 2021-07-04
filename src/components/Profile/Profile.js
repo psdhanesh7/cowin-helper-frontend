@@ -4,11 +4,11 @@ import "firebase/firestore";
 
 import Nav from '../Navbar/Navbar';
 
-export default function Profile() {
+export default function Profile({ user }) {
 
 	const db = firebase.firestore();
 
-	const [user, setUser] = useState();
+	// const [user, setUser] = useState();
 
 	const [name, setName] = useState('');
 	const [age, setAge] = useState('');
@@ -17,8 +17,8 @@ export default function Profile() {
 
 	useEffect(() => {
 		async function fetchUserData() {
-			const user = firebase.auth().currentUser;
-			setUser(user);
+			// const user = firebase.auth().currentUser;
+			// setUser(user);
 			try {
 				const userDoc = await db.collection('users').doc(user.email).get();
 				console.log(userDoc.data());
@@ -44,7 +44,7 @@ export default function Profile() {
 			<div>
 				<Nav />
 				<div className="container">
-					<h2 className="text-center">Profile</h2>
+					<h2 style={{textAlign: "center"}}>Profile</h2>
 
 						<div className="row">
 							<div className="col-25">

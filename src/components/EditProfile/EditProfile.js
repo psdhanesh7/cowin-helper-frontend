@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Redirect } from "react-router";
+import { useHistory } from "react-router";
 import axios from "axios";
 import dateFormat from "dateformat";
 import firebase from "firebase/app";
@@ -12,11 +12,12 @@ import "./EditProfile.css"
 export default function EditProfile({ user }) {
 
 	const db = firebase.firestore();
+	const history = useHistory();
 
 	const [name, setName] = useState('');
 	const [age, setAge] = useState('');
 	const [district, setDistrict] = useState('');
-	const [preference, setPreference] = useState([]);
+	const [preferences, setPreferences] = useState([]);
 
 	const [districts, setDistricts] = useState([]);
 	const [centers, setCenters] = useState([]);
@@ -33,7 +34,7 @@ export default function EditProfile({ user }) {
 				setName(userDoc.data().name);
 				setAge(userDoc.data().age);
 				setDistrict(userDoc.data().district);
-				setPreference(userDoc.data().centers);
+				setPreferences(userDoc.data().centers);
 
 				console.log('Set user data');
 
@@ -70,30 +71,50 @@ export default function EditProfile({ user }) {
 	}
 
 	const onChangePreference = (e) => {
-		setPreference([e.target.value]);
+		setPreferences([e.target.value]);
 	}
 
 	const submitProfile = (e) => {
-		try {
 
-		} catch(err) {
-			alert(err.message);
+		e.preventDefault();
+
+		async function updateProfile() {
+			try {
+				const user = firebase.auth().currentUser;
+				if(!user) return history.push('/');
+	
+				await db.collection('users').doc(user.email).set({
+					name,
+					email: user.email,
+					age,
+					district,
+					token: localStorage.getItem('messagingToken'),
+					centers: preferences.map(preference => ({id: preference, notificationSend: false}))
+				});
+
+				history.push('/home');
+				console.log('Profile update successfully');
+			} catch(err) {
+				alert(err.message);
+			}
 		}
+
+		updateProfile();
 	}
 
 	// if(user) {
 		return (
 			<div>
 				<Nav></Nav>
-				<div class="container">
-					<h2>Edit Profile</h2>
+				<div className="container">
+					<h2 style={{textAlign: "center"}}>Edit Profile</h2>
 	
 					<form>
-					<div class="row">
-						<div class="col-25">
+					<div className="row">
+						<div className="col-25">
 							<label for="name">Name</label>
 						</div>
-						<div class="col-75">
+						<div className="col-75">
 							<input 
 								type="text" 
 								id="name" 
@@ -105,11 +126,11 @@ export default function EditProfile({ user }) {
 							/>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-25">
+					<div className="row">
+						<div className="col-25">
 							<label for="age">Age</label>
 						</div>
-						<div class="col-75">
+						<div className="col-75">
 							<input 
 								type="text" 
 								id="age" 
@@ -120,11 +141,11 @@ export default function EditProfile({ user }) {
 							/>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-25">
+					<div className="row">
+						<div className="col-25">
 							<label for="district">District</label>
 						</div>
-						<div class="col-75">
+						<div className="col-75">
 							<select id="district" name="district" onChange={onChangeDistrict}>
 								<option value="" disabled selected></option>
 								{districts.map(
@@ -135,11 +156,11 @@ export default function EditProfile({ user }) {
 							</select>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-25">
+					<div className="row">
+						<div className="col-25">
 							<label for="centers">Centers</label>
 						</div>
-						<div class="col-75">
+						<div className="col-75">
 							<select id="centers" name="centers" onChange={onChangePreference}>
 								<option value="" disabled selected></option>
 								{centers.map(
@@ -151,7 +172,7 @@ export default function EditProfile({ user }) {
 						</div>
 					</div>
 	
-					<div class="row">
+					<div className="row">
 						<input type="submit" value="Submit" onClick={submitProfile}/>
 					</div>
 					</form>
